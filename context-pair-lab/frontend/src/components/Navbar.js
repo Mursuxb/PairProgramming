@@ -1,7 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-const Navbar = ({isAuthenticated,setIsAuthenticated}) => {
+import { useAuthContext } from "../hooks/useAuthContext";
+
+const Navbar = () => {
+  const {user} = useAuthContext();
 const navigate=useNavigate();
-console.log(isAuthenticated);
+
   return (
     <header>
       <div className="container">
@@ -9,13 +12,13 @@ console.log(isAuthenticated);
           <h1>Dashboard</h1>
         </Link>
         <nav>
-          {isAuthenticated&& (
+          {user && (
             <div>
-              <span>{JSON.parse(localStorage.getItem("user")).email}</span>
-              <Link to="/login"><button onClick={()=>{localStorage.removeItem("user");localStorage.removeItem("token");setIsAuthenticated(false);navigate("/login")}}>Log out</button></Link>
+              <span>{user.email}</span>
+              <Link to="/login"><button onClick={()=>{navigate("/login")}}>Log out</button></Link>
             </div>
           )}
-          {!isAuthenticated && (
+          {!user && (
             <div>
               <Link to="/login">Login</Link>
               <Link to="/signup">Signup</Link>

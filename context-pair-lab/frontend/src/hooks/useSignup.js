@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
 export default function useSignup (url) {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(null);
+    const { dispatch } = useAuthContext();
     const signup = async (object) => {
         setIsLoading(true);
         setError(null);
@@ -22,6 +24,9 @@ export default function useSignup (url) {
     
         localStorage.setItem("token", user.token);
         localStorage.setItem("user", JSON.stringify(user));
+
+        dispatch({ type: "LOGIN", payload: user });
+
         setIsLoading(false);
       };
 
